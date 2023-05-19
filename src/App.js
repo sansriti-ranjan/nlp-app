@@ -1,12 +1,12 @@
 import './App.css';
-import TextBox from './components/TextBox'
+import NLPText from './components/NLPText'
 
 function App() {
 
   return (
     <div>
       <header>
-        <TextBox />
+        <NLPText />
       </header>
     </div>
   );

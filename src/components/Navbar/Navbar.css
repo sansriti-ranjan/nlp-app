@@ -3,14 +3,16 @@
     background-color: rgb(110, 94, 254);
     height: 80px;
     display: flex;      
-    justify-content: center;
+    /*justify-content: center;*/
+    justify-content: space-between;
     align-items: center;
 }
 
 .navbar-icon {
     color: #ffffff;
     justify-self: center;
-    margin-left: 20px;
+
+    margin-left: 40px;
     cursor: pointer;
 }
 

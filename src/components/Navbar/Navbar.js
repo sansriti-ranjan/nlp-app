@@ -1,11 +1,11 @@
-import { useState } from "react"
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import logo from '../../images/default.svg';
 import { MenuItems } from './MenuItems'
 import './Navbar.css'
 
 const Navbar = () => {
   const [clicked, setClicked] = useState(false)
-  
 
 
   return (
@@ -23,9 +23,9 @@ const Navbar = () => {
           {MenuItems.map((item, index) => {
               return (
                 <li key={index}>
-                  <a className={item.className} href={item.url}>
+                  <Link className={item.className} to={item.url}>
                     {item.title}
-                  </a>
+                  </Link>
                 </li>
               )
           })}

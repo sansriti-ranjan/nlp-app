@@ -4,22 +4,22 @@ This way the user does not have to manually type everything.
 export const MenuItems = [
     {
         title: 'Home',
-        url: '#',
+        url: '/',
         className: 'nav-links'
     },
     {
         title: 'Projects',
-        url: '#',
+        url: '/projects',
         className: 'nav-links'
     },
     {
         title: 'Other',
-        url: '#',
+        url: '/other',
         className: 'nav-links'
     },
     {
         title: 'About',
-        url: '#',
+        url: '/about',
         className: 'nav-links'
     }
 

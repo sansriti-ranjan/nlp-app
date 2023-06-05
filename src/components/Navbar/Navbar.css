@@ -1,0 +1,49 @@
+/*CSS for Navbar*/
+.NavbarItems {
+    background-color: rgb(110, 94, 254);
+    height: 80px;
+    display: flex;      
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar-icon {
+    color: #ffffff;
+    justify-self: center;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.nav-menu {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    grid-gap: 10px;
+    list-style: none;
+    text-align: center;
+    width: 70vw;
+    justify-content: end;
+    margin-right: 2rem;
+}
+
+.nav-menu.active {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    grid-gap: 10px;
+    list-style: none;
+    text-align: center;
+    width: 70vw;
+    justify-content: end;
+    margin-right: 2rem;
+}
+
+.nav-links {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+}
+
+.nav-links:hover {
+    background-color: #6d76f7;
+    border-radius: 4px;
+    transition: all 0.2s ease-out;
+}

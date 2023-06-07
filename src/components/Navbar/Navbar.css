@@ -1,7 +1,7 @@
 /*CSS for Navbar*/
 .NavbarItems {
     background-color: rgb(110, 94, 254);
-    height: 80px;
+    height: 70px;
     display: flex;      
     /*justify-content: center;*/
     justify-content: space-between;

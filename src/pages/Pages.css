@@ -1,0 +1,10 @@
+/*CSS for Home Page*/
+.AppMain {
+    height: 100%;
+    display: grid;      
+    justify-self: center;
+    margin-left: 40px;
+}
+
+
+

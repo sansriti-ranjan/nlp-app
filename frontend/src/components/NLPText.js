@@ -2,6 +2,7 @@ import { useState, useEffect} from "react"
 import axios from 'axios'
 
 function NLPText() {
+  /*Recieve user input and translate on form submit*/
 
   const [name, setName] = useState("Enter a sentence...")
   const [sent, setSent] = useState("")
@@ -11,48 +12,20 @@ function NLPText() {
     setName(event.target.value)
   }
 
-  const setTranslatedSent = (event) => {
-    setSent(event.target.value)
-  }
-
-  //useEffect(() => {
-  //  const words = { 'sent': name }
-  //  axios.post('http://localhost:8000/', words)
-  //    .then(res => setTranslatedSent(res.data))
-  //}, []);
-
-  const displayText2 = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
+    
+    const inputSentence = { text_message: name }
     console.log(event.target)
-    //axios.post('https://localhost:8000/translate', 
-    //  {'text_message': name})
-    //.then(res => console.log(res))
-    setSent(name)
-  }
-
-  const displayText = (event) => {
-    event.preventDefault()
-    //const words = { text_message: 'no .' }
-
-    console.log(event.target)
-    //console.log(words)
-    const config = { headers: {'Content-Type': 'application/json'} };
-    axios.post('http://localhost:8000/translate', { text_message: "no." }, config)
-    .then(res => console.log(res))
+    axios.post('http://localhost:8000/translate', inputSentence)
+    .then(res => setSent(res.data.target))
     .catch(function (error) {
       console.log(error);
     });
-    //setSent(name)
-  }
-
-  // Send http request
-  const translateSent = (event) => {
-    
-    
   }
 
   return (
-    <form onSubmit={displayText}>
+    <form onSubmit={handleSubmit}>
       <label>
         <input type="text" 
           value={name}

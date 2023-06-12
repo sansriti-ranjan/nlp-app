@@ -2,6 +2,8 @@
 
 TODO:
   1. Create cards for interactive components (white background)
+  2. Clean up the network code and backend A LOT
+  3. Understand the model we're working with 
 */
 
 import NLPText from './components/NLPText'

@@ -20,14 +20,14 @@ function App() {
       <header>
         <Navbar />
       </header>
-      <body className='app-body'>
+      <div className='app-body'>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/projects' element={<Projects />} />
           <Route path='/other' element={<Other />} />
           <Route path='/about' element={<About />} />
         </Routes> 
-      </body>
+      </div>
     </div>
   );
 }

@@ -1,8 +1,10 @@
 from fastapi import FastAPI # main fastapi functionality
 # CORS allows frontend to communicate with backend 
 # (frontend and backend have different origins (ports))
-from fastapi.middleware.cors import CORSMiddleware 
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from NMT import translate
+
 
 # App object
 app = FastAPI()
@@ -18,6 +20,9 @@ app.add_middleware(
     allow_headers=['*']
 )
 
+class Sentence(BaseModel):
+    text_message: str
+
 # root endpoint with a hello message
 @app.get('/')
 def root():
@@ -26,11 +31,11 @@ def root():
 
 # endpoint to trigger the translation
 @app.post('/translate')
-def read_item(text_message):
+def read_item(sentence: Sentence):
     print('hi')
-    print(text_message)
+    print(sentence.text_message)
 
-    translated_sent = translate(text_message, 'cpu')
+    translated_sent = translate(sentence.text_message, 'cpu')
 
 
-    return {'input': text_message, 'target': translated_sent}
+    return {'input': sentence.text_message, 'target': translated_sent}

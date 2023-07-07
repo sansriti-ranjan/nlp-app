@@ -17,7 +17,7 @@ function NLPText() {
     if (event.key === "Enter" && !event.shiftKey) {
        event.preventDefault();
       console.log('It works')
-      handleSubmit(event); // this won't be triggered
+      handleSubmit(event);
     }
   }
 

@@ -1,0 +1,31 @@
+/*CSS for NLP input form*/
+
+.nlp-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    /*background-color: rgb(110, 94, 254);*/
+
+}
+
+textarea {
+    height: 100px;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    resize: None;
+
+}
+
+textarea,
+textarea::placeholder {
+    font: 1.25rem sans-serif;
+}
+
+
+button {    
+    visibility: hidden;
+    
+}

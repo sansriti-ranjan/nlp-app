@@ -6,7 +6,7 @@ const Home = () => {
     return (
       <div className="AppMain">
         <h1>
-          NLP 
+          Translate 
         </h1>
         <NLPText />
       </div>

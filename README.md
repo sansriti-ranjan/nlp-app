@@ -19,5 +19,6 @@ npm start
 Open another terminal and run:
 ```bash
 cd backend
+pip install -r requirements.txt
 uvicorn main:app --reload
 ```

@@ -1,3 +1,4 @@
+"""FastAPI main file"""
 from fastapi import Request, FastAPI # main fastapi functionality
 # CORS allows frontend to communicate with backend 
 # (frontend and backend have different origins (ports))

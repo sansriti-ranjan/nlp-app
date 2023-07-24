@@ -1,5 +1,7 @@
 model.ckpt
 
+__pycache__
+
 .DS_STORE
 node_modules
 scripts/flow/*/.flowconfig

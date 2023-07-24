@@ -434,7 +434,7 @@ def translate(user_input, device):
     """Translate a user input to another language"""
 
     batch_size = 1
-    model_save_path = 'model/model.ckpt'
+    model_save_path = 'models/attention/weights/model.ckpt'
 
     test_data_src = read_corpus(user_input, source='translate')
 

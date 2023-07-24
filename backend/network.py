@@ -293,7 +293,6 @@ class NMT(nn.Module):
     def load(model_path):
         """ Load the model from a file.
         """
-        print(model_path)
         params = torch.load(model_path, map_location='cpu')
         args = params['args']
         model = NMT(vocab=params['vocab'], **args)

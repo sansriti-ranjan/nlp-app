@@ -8,6 +8,9 @@ April 28, 2023
 References: https://github.com/JasonFengGit/Neural-Model-Translation
 
 Dataset location (vietnamese): https://nlp.stanford.edu/projects/nmt/
+
+Issues:
+    1. Creating subdirectories for separate models: https://github.com/pytorch/pytorch/issues/3678
 """
 from __future__ import print_function
 import argparse
@@ -434,7 +437,7 @@ def translate(user_input, device):
     """Translate a user input to another language"""
 
     batch_size = 1
-    model_save_path = 'models/attention/weights/model.ckpt'
+    model_save_path = 'weights/model.ckpt'
 
     test_data_src = read_corpus(user_input, source='translate')
 

@@ -1,5 +1,13 @@
 """network.py
 NMT model definition and embeddings
+Bahdanau Attention as described here
+https://d2l.ai/chapter_attention-mechanisms-and-transformers/bahdanau-attention.html
+
+Resources:
+    1. lstm output: 
+        - https://stackoverflow.com/questions/48302810/whats-the-difference-between-hidden-and-output-in-pytorch-lstm
+    2. Why we pack padded sequences:
+        - https://stackoverflow.com/questions/51030782/why-do-we-pack-the-sequences-in-pytorch
 """
 
 import sys
@@ -21,7 +29,7 @@ class NMT(nn.Module):
         - 
     """
     def __init__(self, embed_size, hidden_size, vocab, device='cpu', dropout_rate=0.2,
-                 rnn_layer=nn.LSTM, num_layers=1, activation=torch.tanh, bidirectional=False):
+                 rnn_layer=nn.LSTM, num_layers=1, activation=torch.tanh, bidirectional=True):
         super(NMT, self).__init__()
         self.model_embeddings = ModelEmbeddings(embed_size, vocab) # (vocab_len, embed_size)
         self.hidden_size = hidden_size
@@ -46,7 +54,7 @@ class NMT(nn.Module):
 
         self.encoder = rnn_layer(input_size=embed_size, hidden_size=hidden_size, bidirectional=bidirectional,
                                  bias=True, num_layers=num_layers)
-        # LSTMCell is an lstm with the 'for loop' - it won't loop through all the timesteps by itself
+        # LSTMCell is an lstm without the 'for loop' - it won't loop through all the timesteps by itself
         # I believe these are also not optimized through cuDNN
         self.decoder = nn.LSTMCell(input_size=embed_size+hidden_size, hidden_size=hidden_size, bias=True)
         
@@ -86,15 +94,30 @@ class NMT(nn.Module):
         """
         enc_hiddens, dec_init_state = None, None
         last_hidden, last_cell = None, None
-        X = self.model_embeddings.source(source_padded) # (src_len, b, e)
+        # convert padded, tokenized sentences into embeddings 
+        X = self.model_embeddings.source(source_padded) # (src_len, batch_size, embed_dim)
         enc_hiddens, last_state = self.encoder(pack_padded_sequence(X, source_lengths))
+        # enc_hiddens = (src_len, batch_size, 2*hidden_size) 2 => bidirectional
+        # last_state = (hn, cn) => 
+        #                         hidden_state = hn = (2*num_layers, batch_size, hidden_size) 
+        #                         cell_state = cn = (2*num_layers, batch_size, hidden_size)
+        # Explanation of output (enc_hiddens) vs hidden_state here: https://stackoverflow.com/questions/48302810/whats-the-difference-between-hidden-and-output-in-pytorch-lstm
+        # hn = memory of LSTMs and RNNs in general => tanh(cn)*o_t
+        # cn = long term memory of only LSTMs
         if self.is_lstm:
-            last_hidden, last_cell = last_state
-        else:
+            last_hidden, last_cell = last_state # Assign the hidden and cell state
+        else: # other RNNs do not have a cell state
             last_hidden = last_state
+        # pad_packed_sequences is an inverse operation of pack_padded_sequences
+        # This returns the original padded tensors no longer in a PackSequence object
+        # https://pytorch.org/docs/stable/generated/torch.nn.utils.rnn.pad_packed_sequence.html 
         enc_hiddens, _ = pad_packed_sequence(enc_hiddens)
+        print(enc_hiddens.shape)
+        # (src_len, batch_size, 2*hidden_size) -> (batch_size, src_len, 2*hidden_size)
         enc_hiddens = enc_hiddens.permute(1, 0, 2)
+        print(enc_hiddens.shape)
 
+        # ##########################  START HERE  ########################## 
         # if not using bidirectional then last hidden will only have a size of 1 and you do not have to concatenate
         init_decoder_hidden = self.h_projection(torch.cat((last_hidden[0], last_hidden[1]), 1))
         if self.is_lstm:
@@ -106,7 +129,7 @@ class NMT(nn.Module):
         return enc_hiddens, dec_init_state
 
     def decode(self, enc_hiddens, enc_masks, dec_init_state, target_padded):
-            # Chop of the <END> token for max length sentences.
+        # Chop of the <END> token for max length sentences.
         target_padded = target_padded[:-1]
 
         # Initialize the decoder state (hidden and cell)
@@ -312,6 +335,8 @@ class ModelEmbeddings(nn.Module):
         and embeddings try to learn the semantics of the word by placing similar words
         closer together in the embedding space.
         https://developers.google.com/machine-learning/crash-course/embeddings/video-lecture#:~:text=An%20embedding%20is%20a%20relatively,like%20sparse%20vectors%20representing%20words.
+        
+        For NMT, embeddings are of shape (len_vocab, embedded_size) 
         """
         super(ModelEmbeddings, self).__init__()
         self.embed_size = embed_size
